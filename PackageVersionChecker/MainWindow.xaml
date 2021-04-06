@@ -1,0 +1,83 @@
+﻿<Window x:Class="PackageVersionChecker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PackageVersionChecker"
+        xmlns:local_conv="clr-namespace:PackageVersionChecker.Converters"
+        mc:Ignorable="d"
+        Title="Windows 環境チェックツール" Height="450" Width="820"
+        Loaded="Window_Loaded">
+    <Window.Resources>
+        <local_conv:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="400" />
+                <ColumnDefinition Width="*" MinWidth="400" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                
+                <Label Grid.Row="0" Content="Microsoft Visual C パッケージ :" Margin="5" />
+                <ListView Grid.Row="1" ItemsSource="{Binding Products}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding No}" />
+                                    <TextBlock Text=". " />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding IdentifyingNumber}" Foreground="Gray" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Content=".NET Framework インストールバージョン一覧 :" Margin="5" />
+                <ListView Grid.Row="1" ItemsSource="{Binding DotNetVersions}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Version : " />
+                                    <TextBlock Text="{Binding Version.Major}" />
+                                    <TextBlock Text="." />
+                                    <TextBlock Text="{Binding Version.Minor}" />
+                                    <TextBlock Text=" " />
+                                    <TextBlock Text="{Binding Sp, StringFormat=(SP:{0})}" Visibility="{Binding HasSp, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                </StackPanel>
+                                <TextBlock Text="{Binding Detail}" Foreground="Gray" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel Orientation="Horizontal">
+                <Label Margin="5 10 2 10" Content="{Binding ProductLoadingText}" />
+                <Label Margin="0 10" Content="{Binding LoadingText}" Visibility="{Binding IsLoadingProduct, Converter={StaticResource BoolToVisibilityConverter}}" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

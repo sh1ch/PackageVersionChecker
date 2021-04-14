@@ -115,7 +115,7 @@ namespace PackageVersionChecker
             IsLoadingProduct = true;
             ProductLoadingText = Properties.Resources.LoadingText;
 
-            var products = await Task<WinProduct[]>.Run(() => GetWinProduct("%Microsoft Visual C%Redistributable%"));
+            var products = await Task<WinProduct[]>.Run(() => GetWinProduct("%Microsoft Visual C%"));
 
             foreach (var product in products)
             {
